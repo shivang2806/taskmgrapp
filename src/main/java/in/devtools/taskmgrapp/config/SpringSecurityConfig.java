@@ -2,7 +2,9 @@ package in.devtools.taskmgrapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;   // ✅ REQUIRED
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SpringSecurityConfig {
 
     @Bean
@@ -20,15 +23,15 @@ public class SpringSecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(authorize -> {
+//                    authorize.requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN");
+                    authorize.anyRequest().authenticated();
+                })
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
 
-    // ✅ MUST be a Bean
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
