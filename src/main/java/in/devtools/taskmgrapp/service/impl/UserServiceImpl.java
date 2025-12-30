@@ -9,21 +9,30 @@ import in.devtools.taskmgrapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private RoleRepository roleRepository;
     private UserRepository userRepository;
+    private ModelMapper modelMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository) {
+    public UserServiceImpl(
+            RoleRepository roleRepository,
+            UserRepository userRepository,
+            ModelMapper modelMapper
+            ) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -36,11 +45,14 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        Role role = roleRepository.findByName("ROLE_USER");
-        if(role==null){
-            role = checkRoleExist();
+        Role role = roleRepository.findByName("USER");
+        if (role == null) {
+            role = new Role();
+            role.setName("USER");
+            roleRepository.save(role);
         }
-        user.setRoles(Arrays.asList(role)); // ✅ correct
+        user.setRoles(Arrays.asList(role));
+
         userRepository.save(user);
 
     }
@@ -56,6 +68,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
+
+    @Override
+    public List<UserDto> getAllUser() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map((user)->modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+    }
 
 
 }

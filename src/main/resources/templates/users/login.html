@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -11,31 +12,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div th:replace="~{common/header::header}" ></div>
+<div sec:authorize="isAuthenticated()"
+     th:replace="~{common/header::header}">
+</div>
 
-<div class="container">
-    <h3>Login Here</h3>
+<div class="container pt-3">
     <div th:if="${param.success}" >
         <div class="alert alert-info" >
-            You have successfully registered with Task Manager App
+            You have successfully login with Task Manager App
         </div>
     </div>
 
     <div class="row mt-2">
-        <div class="card p-3" >
-            <form th:action="@{/authenticate}" method="post" class="f-border" th:object="${user}" >
-                <div class="form-group mt-2">
-                    <label>Email</label>
-                    <input type="email" th:field="*{email}" class="form-control mt-2" value="" required>
-                </div>
-                <div class="form-group mt-2">
-                    <label>Password</label>
-                    <input type="password" th:field="*{password}" class="form-control mt-2" value="" required>
-                </div>
-                <span>Register here ? <a th:href="@{/register}" > Register</a></span>
-                <button type="submit" class="btn btn-primary mt-2"  id="">Login</button>
-            </form>
+        <div class="col-md-3" ></div>
+        <div class="col-md-6" >
+            <div class="card p-3" >
+                <h3 class="mt-r mb-3" >Login Here</h3>
+                <form th:action="@{/login}" method="post">
+
+                    <div class="form-group mt-2">
+                        <label>Email or Username</label>
+                        <input type="text" name="username" class="form-control mt-2" required>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control mt-2" required>
+                    </div>
+
+                    <span>Register here ? <a th:href="@{/register}">Register</a></span>
+                    <button type="submit" class="btn btn-primary mt-2">Login</button>
+
+                </form>
+
+            </div>
         </div>
+        <div class="col-md-3" ></div>
+
+
     </div>
 </div>
 

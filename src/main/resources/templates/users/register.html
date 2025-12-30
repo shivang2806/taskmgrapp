@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -11,38 +12,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div th:replace="~{common/header::header}" ></div>
+<div sec:authorize="isAuthenticated()"
+     th:replace="~{common/header::header}">
+</div>
 
 <div class="container">
-    <h3>Register Here</h3>
 
     <div class="row mt-2">
-        <div class="card p-3" >
-            <form th:action="@{/register/save}" method="post" class="f-border" th:object="${user}" >
-                <div class="form-group mt-2">
-                    <label>Name</label>
-                    <input type="text" id="name" class="form-control mt-2" th:field="*{name}" >
-                    <p th:errors="*{name}" th:if="${#fields.hasErrors('name')}" class="text-danger" ></p>
-                </div>
-                <div class="form-group mt-2">
-                    <label>Username</label>
-                    <textarea class="form-control mt-2" th:field="*{username}"  ></textarea>
-                    <p th:errors="*{username}" th:if="${#fields.hasErrors('username')}" class="text-danger" ></p>
-                </div>
-                <div class="form-group mt-2">
-                    <label>Email</label>
-                    <input type="email" th:field="*{email}" class="form-control mt-2" value="" >
-                    <p th:errors="*{email}" th:if="${#fields.hasErrors('email')}" class="text-danger" ></p>
-                </div>
-                <div class="form-group mt-2">
-                    <label>Password</label>
-                    <input type="password" th:field="*{password}" class="form-control mt-2" value="" >
-                    <p th:errors="*{password}" th:if="${#fields.hasErrors('password')}" class="text-danger" ></p>
-                </div>
-                    <span>Already Register ? <a th:href="@{/login}" > Login</a></span>
-                <button type="submit" class="btn btn-primary mt-2"  id="">Register</button>
-            </form>
+        <div class="col-md-3" ></div>
+        <div class="col-md-6" >
+
+            <div class="card p-3" >
+                <h3>Register Here</h3>
+                
+                <form th:action="@{/register/save}" method="post" class="f-border" th:object="${user}" >
+                    <div class="form-group mt-2">
+                        <label>Name</label>
+                        <input type="text" id="name" class="form-control mt-2" th:field="*{name}" >
+                        <p th:errors="*{name}" th:if="${#fields.hasErrors('name')}" class="text-danger" ></p>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Username</label>
+                        <textarea class="form-control mt-2" th:field="*{username}"  ></textarea>
+                        <p th:errors="*{username}" th:if="${#fields.hasErrors('username')}" class="text-danger" ></p>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Email</label>
+                        <input type="email" th:field="*{email}" class="form-control mt-2" value="" >
+                        <p th:errors="*{email}" th:if="${#fields.hasErrors('email')}" class="text-danger" ></p>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Password</label>
+                        <input type="password" th:field="*{password}" class="form-control mt-2" value="" >
+                        <p th:errors="*{password}" th:if="${#fields.hasErrors('password')}" class="text-danger" ></p>
+                    </div>
+                        <span>Already Register ? <a th:href="@{/login}" > Login</a></span>
+                    <button type="submit" class="btn btn-primary mt-2"  id="">Register</button>
+                </form>
+            </div>
         </div>
+        <div class="col-md-3" ></div>
     </div>
 </div>
 

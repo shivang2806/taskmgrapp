@@ -28,6 +28,16 @@ public class TaskController {
         return "tasks/taskList";
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/dashboard")
+    public String getDashboardData(Model model)
+    {
+        List<TaskDto> tasks =  taskService.getAllTask();
+        model.addAttribute("tasks", tasks);
+
+        return "tasks/dashboard";
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/task-create")
     public String createTask(Model model)
