@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+
+</head>
+    <body>
+
+        <aside class="sidebar" id="sidebar" th:fragment="sidebar" >
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">D</div>
+                <span class="sidebar-logo-text">DevTools</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a th:href="@{/dashboard}" class="menu-link active">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/users}" class="menu-link">
+                        <i class="bi bi-people"></i>
+                        <span>Customers</span>
+                        <span class="menu-badge">248</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/tasks}" class="menu-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Tasks</span>
+                        <span class="menu-badge">12</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-bar-chart"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <div class="menu-section-title">Management</div>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-kanban"></i>
+                        <span>Pipeline</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Messages</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <div class="menu-section-title">Settings</div>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-gear"></i>
+                        <span>Preferences</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Security</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </body>
+</html>

@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -32,6 +34,13 @@ public class TaskController {
     @GetMapping("/dashboard")
     public String getDashboardData(Model model)
     {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        System.out.println("Username: " + auth.getName());
+        auth.getAuthorities().forEach(a ->
+                System.out.println("Authority: " + a.getAuthority())
+        );
+
         List<TaskDto> tasks =  taskService.getAllTask();
         model.addAttribute("tasks", tasks);
 

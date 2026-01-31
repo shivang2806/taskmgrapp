@@ -6,60 +6,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Login - DevTools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
 </head>
 <body>
-<div sec:authorize="isAuthenticated()"
-     th:replace="~{common/header::header}">
-</div>
 
-<div class="container pt-3">
-    <div th:if="${param.success}" >
-        <div class="alert alert-info" >
-            You have successfully login with Task Manager App
+<!-- Floating Shapes -->
+<div class="shape shape-1"></div>
+<div class="shape shape-2"></div>
+<div class="shape shape-3"></div>
+
+<!-- Login Container -->
+<div class="login-container" style="margin-top:100px;">
+    <div class="login-card">
+        <!-- Logo -->
+        <div class="login-logo">
+            <div class="login-logo-icon">C</div>
+            <span class="login-logo-text">CRMFlow</span>
         </div>
-    </div>
 
-    <div class="row mt-2">
-        <div class="col-md-3" ></div>
-        <div class="col-md-6" >
-            <div class="card p-3" >
-                <h3 class="mt-r mb-3" >Login Here</h3>
-                <form th:action="@{/login}" method="post">
-
-                    <div class="form-group mt-2">
-                        <label>Email or Username</label>
-                        <input type="text" name="username" class="form-control mt-2" required>
-                    </div>
-
-                    <div class="form-group mt-2">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control mt-2" required>
-                    </div>
-
-                    <span>Register here ? <a th:href="@{/register}">Register</a></span>
-                    <button type="submit" class="btn btn-primary mt-2">Login</button>
-
-                </form>
-
+        <div th:if="${param.success}" >
+            <!-- Success Login Alert -->
+            <div class="alert-modern success">
+                <div class="alert-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">Login Successful!</div>
+                    <p class="alert-message">You have successfully logged in to Task Manager App</p>
+                </div>
+                <button class="alert-close" onclick="this.parentElement.remove()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
-        <div class="col-md-3" ></div>
 
+        <!-- Header -->
+        <div class="login-header">
+            <h2>Welcome Back!</h2>
+            <p>Sign in to access your dashboard</p>
+        </div>
 
+        <!-- Alert Message -->
+        <div class="alert-message" id="alertMessage"></div>
+
+        <!-- Login Form -->
+        <form th:action="@{/login}" method="post" id="loginForm" class="mb-3" >
+            <!-- Email Field -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <div class="form-input-wrapper">
+                    <input type="text" name="username" class="form-input" required placeholder="Enter your username">
+                    <i class="bi bi-envelope form-icon"></i>
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="form-input-wrapper">
+                    <input type="password" id="password" name="password" class="form-input" required placeholder="Enter your password">
+                    <i class="bi bi-lock form-icon"></i>
+                    <i class="bi bi-eye password-toggle" id="togglePassword"></i>
+                </div>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit" class="btn-login">
+                Sign In
+            </button>
+        </form>
+
+        <!-- Sign Up Link -->
+        <div class="signup-link">
+            Don't have an account? <a th:href="@{/register}" >Sign up</a>
+        </div>
     </div>
 </div>
-
-
 
 
 
 <!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/login.js}"></script>
+
 </body>
 </html>

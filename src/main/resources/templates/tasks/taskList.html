@@ -1,77 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Document</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-    <body>
-
-    <div sec:authorize="isAuthenticated()"
-         th:replace="~{common/header::header}">
-    </div>
-        <div class="container">
-            <div class="my-4" >
-                <div class="row" >
-                    <div class="col-md-10" >
-                        <h3 >Task manage app</h3>
-                    </div>
-                    <div class="col-md-2">
-                        <a th:href="@{/task-create}" class="btn btn-primary" >Create Task</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <table class="table table-Primary table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="task, taskStat : ${tasks}" >
-                            <th scope="row" th:text="${taskStat.count}" ></th>
-                            <td th:text="${task.name}" ></td>
-                            <td th:text="${task.description}">Otto</td>
-                            <td th:text="${task.priority}" ></td>
-                            <td th:text="${task.startDate}" ></td>
-                            <td th:text="${task.endDate}" ></td>
-                            <td th:text="${task.status}"></td>
-                            <td>
-                                <a class="btn btn-info" ><i class="fa fa-pencil" ></i></a>
-                                <a class="btn btn-danger" >Delete</a>
-                                <a class="btn btn-primary" ><i class="fa fa-eye" ></i></a>
-                            </td>
-                        </tr>
-
-
-                    </tbody>
-                </table>
-            </div>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <title>Task List</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3 class="chart-title">Task List</h3>
+            <a th:href="@{/task-create}" class="chart-btn">Create Task</a>
         </div>
-
-
-
-
-
-        <!-- JavaScript Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-                crossorigin="anonymous"></script>
-    </body>
+        <div class="table-responsive">
+            <table class="table activity-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task, taskStat : ${tasks}">
+                    <th scope="row" th:text="${taskStat.count}"></th>
+                    <td th:text="${task.name}"></td>
+                    <td th:text="${task.description}"></td>
+                    <td th:text="${task.priority}"></td>
+                    <td th:text="${task.startDate}"></td>
+                    <td th:text="${task.endDate}"></td>
+                    <td th:text="${task.status}"></td>
+                    <td>
+                        <a class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-danger">Delete</a>
+                        <a class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
 </html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - DevTools</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+</head>
+<body>
+<div sec:authorize="isAuthenticated()"
+     th:replace="~{common/header::header}">
+</div>
+
+<div class="container pt-3">
+    <div th:if="${param.success}" >
+        <div class="alert alert-info" >
+            You have successfully login with Task Manager App
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-3" ></div>
+        <div class="col-md-6" >
+            <div class="card p-3" >
+                <h3 class="mt-r mb-3" >Login Here</h3>
+                <form th:action="@{/login}" method="post">
+
+                    <div class="form-group mt-2">
+                        <label>Email or Username</label>
+                        <input type="text" name="username" class="form-control mt-2" required>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control mt-2" required>
+                    </div>
+
+                    <span>Register here ? <a th:href="@{/register}">Register</a></span>
+                    <button type="submit" class="btn btn-primary mt-2">Login</button>
+
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-3" ></div>
+
+
+    </div>
+</div>
+
+
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/login.js}"></script>
+
+</body>
+</html>

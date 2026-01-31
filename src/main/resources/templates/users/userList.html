@@ -1,62 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-
-<div sec:authorize="isAuthenticated()"
-     th:replace="~{common/header::header}">
-</div>
-<div class="container">
-    <div class="my-4" >
-        <div class="row" >
-            <div class="col-md-10" >
-                <h3 >User manage app</h3>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+    <head>
+        <title>Customers List</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Customers List</h3>
+                    <button class="chart-btn">View All</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table activity-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user, userStat : ${users}">
+                            <th scope="row" th:text="${userStat.count}"></th>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td><span class="status-badge completed">Action</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-
-        <table class="table table-Primary table-striped table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Email</th>
-                <th scope="col">Name</th>
-                <th scope="col">Username</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user, userStat : ${users}" >
-                <th scope="row" th:text="${userStat.count}" ></th>
-                <td th:text="${user.email}" ></td>
-                <td th:text="${user.name}">Otto</td>
-                <td th:text="${user.username}" ></td>
-            </tr>
-
-
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-
-
-
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-</body>
+    </body>
 </html>

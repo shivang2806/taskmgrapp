@@ -32,7 +32,14 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/register", "/register/save").permitAll();
+                    auth.requestMatchers(
+                            "/login",
+                            "/register",
+                            "/register/save",
+                            "/css/**",
+                            "/js/**",
+                            "/images/**"
+                    ).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(form -> form
