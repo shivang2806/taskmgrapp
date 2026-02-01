@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">Customer List</h3>
+                <a th:href="@{/create-customer}" class="chart-btn">Create Customer</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table activity-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="customer, customerStat : ${customers}">
+                        <th scope="row" th:text="${customerStat.count}"></th>
+                        <td th:text="${customer.name}"></td>
+                        <td th:text="${customer.email}"></td>
+                        <td th:text="${customer.mobile}"></td>
+                        <td th:text="${customer.status}"></td>
+                        <td>
+                            Action
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
