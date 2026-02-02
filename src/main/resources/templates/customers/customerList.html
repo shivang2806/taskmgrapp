@@ -28,12 +28,16 @@
                     <tbody>
                     <tr th:each="customer, customerStat : ${customers}">
                         <th scope="row" th:text="${customerStat.count}"></th>
-                        <td th:text="${customer.name}"></td>
+                        <td>
+                            <a th:href="@{/customer-profile/{id}(id=${customer.id})}">
+                                <span th:text="${customer.name}"></span>
+                            </a>
+                        </td>
                         <td th:text="${customer.email}"></td>
                         <td th:text="${customer.mobile}"></td>
                         <td th:text="${customer.status}"></td>
                         <td>
-                            Action
+                            <a><i class="bi bi-eye" ></i></a>
                         </td>
                     </tr>
                     </tbody>

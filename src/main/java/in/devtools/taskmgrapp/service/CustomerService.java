@@ -9,7 +9,9 @@ public interface CustomerService {
 
     List<CustomerDto> getAllCustomer();
     void createCustomer(StoreCustomerDto storeCustomerDto);
-    CustomerDto getCustomerById(Long Id);
+    CustomerDto getCustomerById(Long id);
     void updateCustomer(CustomerDto CustomerDto);
+    void sendVerificationOtp(String type, Long customerId);
+    void verifyOtp(String type, Long customerId, Integer otp);
 
 }

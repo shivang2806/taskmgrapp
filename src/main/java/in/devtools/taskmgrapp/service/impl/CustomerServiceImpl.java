@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.nio.file.Paths;
 
@@ -74,13 +76,71 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto getCustomerById(Long Id) {
-        return null;
+    public CustomerDto getCustomerById(Long id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        return modelMapper.map(customer, CustomerDto.class);
+
     }
+
 
     @Override
     public void updateCustomer(CustomerDto customerDto) {
 
     }
+
+    @Override
+    public void sendVerificationOtp(String type, Long customerId) {
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+//        String otp = String.valueOf(100000 + new Random().nextInt(900000));
+        Integer otp = 123456;
+
+        if ("email".equalsIgnoreCase(type)) {
+            // TODO: send email OTP
+            System.out.println("Sending EMAIL OTP " + otp + " to " + customer.getEmail());
+        }
+        else if ("mobile".equalsIgnoreCase(type)) {
+            // TODO: send SMS OTP
+            System.out.println("Sending MOBILE OTP " + otp + " to " + customer.getMobile());
+        }
+        else {
+            throw new IllegalArgumentException("Invalid verification type");
+        }
+
+        customer.setOtp(otp);
+        customerRepository.save(customer);
+
+        // TODO: save OTP to DB / cache with expiry
+    }
+
+    @Override
+    public void verifyOtp(String type, Long customerId, Integer otp) {
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        if (!Objects.equals(customer.getOtp(), otp)) {
+            throw new IllegalArgumentException("Invalid OTP");
+        }
+
+        if ("email".equalsIgnoreCase(type) ) {
+            customer.setEmailVerified(true);
+        }
+        else if ("mobile".equalsIgnoreCase(type)) {
+            customer.setMobileVerified(true);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid verification type");
+        }
+        customer.setOtp(null);
+
+        customerRepository.save(customer);
+
+    }
+
 
 }

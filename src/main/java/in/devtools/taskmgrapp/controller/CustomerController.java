@@ -1,19 +1,21 @@
 package in.devtools.taskmgrapp.controller;
 
 import in.devtools.taskmgrapp.dto.CustomerDto;
+import in.devtools.taskmgrapp.dto.OtpRequest;
 import in.devtools.taskmgrapp.dto.StoreCustomerDto;
+import in.devtools.taskmgrapp.dto.VerifyOtpRequest;
 import in.devtools.taskmgrapp.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -55,5 +57,47 @@ public class CustomerController {
         customerService.createCustomer(storeCustomerDto);
         return "redirect:/customer-list";
     }
+
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/customer-profile/{id}")
+    public String getCustomerProfile(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
+        CustomerDto customer = customerService.getCustomerById(id);
+        model.addAttribute("customer", customer);
+        return "customers/profile";
+    }
+
+    @PostMapping("/send-customer-verification-otp")
+    @ResponseBody
+    public ResponseEntity<?> sendCustomerVerificationOtp(@RequestBody OtpRequest request) {
+        customerService.sendVerificationOtp(
+                request.getType(),
+                request.getCustomerId()
+        );
+
+        return ResponseEntity.ok(
+                Map.of("message", "OTP sent successfully")
+        );
+    }
+
+    @PostMapping("/customer-verify-otp")
+    @ResponseBody
+    public ResponseEntity<?> customerVerifyOtp(@RequestBody VerifyOtpRequest request) {
+        try {
+            customerService.verifyOtp(
+                    request.getType(),
+                    request.getCustomerId(),
+                    request.getOtp()
+            );
+            return ResponseEntity.ok(Map.of("message", "OTP Verified successfully"));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(
+                    Map.of("message", ex.getMessage())
+            );
+        }
+    }
+
 
 }
