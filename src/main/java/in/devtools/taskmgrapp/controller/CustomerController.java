@@ -1,9 +1,7 @@
 package in.devtools.taskmgrapp.controller;
 
-import in.devtools.taskmgrapp.dto.CustomerDto;
-import in.devtools.taskmgrapp.dto.OtpRequest;
-import in.devtools.taskmgrapp.dto.StoreCustomerDto;
-import in.devtools.taskmgrapp.dto.VerifyOtpRequest;
+import in.devtools.taskmgrapp.dto.*;
+import in.devtools.taskmgrapp.service.CustomerProfileService;
 import in.devtools.taskmgrapp.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,6 +20,7 @@ import java.util.Map;
 public class CustomerController {
 
     private CustomerService customerService;
+    private CustomerProfileService customerProfileService;
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/customer-list")
@@ -64,8 +63,14 @@ public class CustomerController {
             @PathVariable("id") Long id,
             Model model
     ) {
-        CustomerDto customer = customerService.getCustomerById(id);
-        model.addAttribute("customer", customer);
+        CustomerProfileDto profile = customerProfileService.getCustomerProfile(id);
+
+        model.addAttribute("customer", profile.getCustomer());
+        model.addAttribute("address", profile.getAddress());
+        model.addAttribute("bank", profile.getBank());
+        model.addAttribute("employment", profile.getEmployment());
+        model.addAttribute("kyc", profile.getKyc());
+
         return "customers/profile";
     }
 

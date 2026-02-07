@@ -82,28 +82,16 @@ public class Customer {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @OneToOne(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private CustomerAddress address;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CustomerAddress customerAddress;
 
-    @OneToOne(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private CustomerEmployment employment;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CustomerEmployment customerEmployment;
 
-    @OneToOne(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private CustomerKyc kyc;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CustomerKyc customerKyc;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CustomerBank customerBank;
 
 }

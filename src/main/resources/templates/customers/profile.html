@@ -8,6 +8,7 @@
         <th:block layout:fragment="extra-styles">
 
             <link rel="stylesheet" th:href="@{/css/customer-profile.css}">
+            <link rel="stylesheet" th:href="@{/css/customer-cibil.css}">
 
         </th:block>
     </head>
@@ -67,18 +68,8 @@
                     </div>
 
                     <div class="profile-actions">
-                        <div class="action-btn" title="Send Message">
-                            <i class="bi bi-chat-dots"></i>
-                        </div>
-                        <div class="action-btn" title="Send Email">
-                            <i class="bi bi-envelope"></i>
-                        </div>
-                        <div class="action-btn" title="Call">
-                            <i class="bi bi-telephone"></i>
-                        </div>
-                        <div class="action-btn" title="More Options">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </div>
+                        <button class="btn btn-info btn-sm" >Check Cibil</button>
+                        <button class="btn btn-info btn-sm" >Analyze BRE</button>
                     </div>
                 </div>
             </div>
@@ -110,42 +101,18 @@
                         <i class="bi bi-file-earmark-text"></i>
                         Documents
                     </button>
+                    <button class="tab-btn" onclick="switchTab(event, 'cibil')">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Cibil Info
+                    </button>
+                    <button class="tab-btn" onclick="switchTab(event, 'bre')">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Bre Info
+                    </button>
                 </div>
 
                 <!-- Personal Info Tab -->
                 <div id="personal" class="tab-content active">
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-person-circle"></i>
-                            Basic Information
-                        </h3>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label class="form-label">First Name <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Rahul" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Last Name <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Sharma" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Date of Birth <span class="required">*</span></label>
-                                <input type="date" class="form-input" value="1990-05-15" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Gender <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Male" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Marital Status</label>
-                                <input type="text" class="form-input" value="Married" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Nationality</label>
-                                <input type="text" class="form-input" value="Indian" disabled>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="form-section">
                         <h3 class="section-title">
@@ -158,14 +125,14 @@
                                     <span class="badge bg-success" th:if="${customer.emailVerified}" >Success</span>
                                     <button class="btn btn-info btn-sm" th:if="${!customer.emailVerified}" onClick="sendVerificationOtp('email')" >Get Otp</button>
                                 </label>
-                                <input type="email" class="form-input" value="rahul.sharma@email.com" disabled>
+                                <input type="email" class="form-input" th:value="${customer.email}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Mobile Number <span class="required">*</span>
                                     <span class="badge bg-success" th:if="${customer.mobileVerified}" >Success</span>
                                     <button class="btn btn-info btn-sm" th:if="${!customer.mobileVerified}" onClick="sendVerificationOtp('mobile')" >Get Otp</button>
                                 </label>
-                                <input type="tel" class="form-input" value="+91 98765 43210" disabled>
+                                <input type="tel" class="form-input" th:value="${customer.mobile}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Alternate Mobile</label>
@@ -186,23 +153,24 @@
                         <div class="form-grid">
                             <div class="form-field" style="grid-column: 1 / -1;">
                                 <label class="form-label">Current Address <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Flat 204, Tower A, Green Valley Apartments" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${address.address}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">City <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="New Delhi" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${address.city}" disabled>
+
                             </div>
                             <div class="form-field">
                                 <label class="form-label">State <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Delhi" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${address.state}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">PIN Code <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="110001" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Years at Current Address</label>
-                                <input type="text" class="form-input" value="5 Years" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${address.pincode}" disabled>
                             </div>
                         </div>
                     </div>
@@ -218,15 +186,19 @@
                         <div class="form-grid">
                             <div class="form-field">
                                 <label class="form-label">Bank Name <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="HDFC Bank" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${bank.bankName}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Account Holder Name <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Rahul Sharma" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${bank.accountHolderName}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Account Number <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="50100123456789" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${bank.accountNumber}" disabled>
+
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Account Type <span class="required">*</span></label>
@@ -234,7 +206,8 @@
                             </div>
                             <div class="form-field">
                                 <label class="form-label">IFSC Code <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="HDFC0001234" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${bank.ifscCode}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Branch Name</label>
@@ -272,31 +245,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-credit-card"></i>
-                            Additional Bank Details
-                        </h3>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label class="form-label">Secondary Bank Name</label>
-                                <input type="text" class="form-input" value="ICICI Bank" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Secondary Account Number</label>
-                                <input type="text" class="form-input" value="00611234567890" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">UPI ID</label>
-                                <input type="text" class="form-input" value="rahulsharma@paytm" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Debit Card Last 4 Digits</label>
-                                <input type="text" class="form-input" value="****5678" disabled>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- KYC Details Tab -->
@@ -313,10 +261,9 @@
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Aadhaar Status</label>
-                                <span class="status-badge verified">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Verified
-                                    </span>
+                                <input type="text" class="form-input"
+                                       th:value="${kyc.adharVerified ? 'Verified' : 'Pending'}"
+                                       disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">PAN Number <span class="required">*</span></label>
@@ -324,18 +271,9 @@
                             </div>
                             <div class="form-field">
                                 <label class="form-label">PAN Status</label>
-                                <span class="status-badge verified">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Verified
-                                    </span>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Driving License Number</label>
-                                <input type="text" class="form-input" value="DL-0120230012345" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Passport Number</label>
-                                <input type="text" class="form-input" value="K1234567" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${kyc.panVerified ? 'Verified' : 'Pending'}"
+                                       disabled>
                             </div>
                         </div>
 
@@ -358,53 +296,9 @@
                                     <div class="info-value">10 Jan 2026</div>
                                 </div>
                             </div>
-                            <div class="info-card">
-                                <div class="info-icon amber">
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">Credit Score</div>
-                                    <div class="info-value">780</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-fingerprint"></i>
-                            Biometric & E-KYC
-                        </h3>
-                        <div class="form-grid">
-                            <div class="info-card">
-                                <div class="info-icon green">
-                                    <i class="bi bi-fingerprint"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">Biometric Verification</div>
-                                    <div class="info-value">Completed</div>
-                                </div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-icon green">
-                                    <i class="bi bi-person-check"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">Face Authentication</div>
-                                    <div class="info-value">Verified</div>
-                                </div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-icon blue">
-                                    <i class="bi bi-file-earmark-check"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label">E-Sign Status</div>
-                                    <div class="info-value">Active</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Employment Details Tab -->
@@ -421,51 +315,25 @@
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Company Name <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Tech Solutions Pvt Ltd" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${employment.companyName}" disabled>
                             </div>
                             <div class="form-field">
-                                <label class="form-label">Designation <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="Senior Software Engineer" disabled>
+                                <label class="form-label">Location <span class="required">*</span></label>
+                                <input type="text" class="form-input"
+                                       th:value="${employment.location}" disabled>
                             </div>
                             <div class="form-field">
-                                <label class="form-label">Department</label>
-                                <input type="text" class="form-input" value="Technology" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Date of Joining</label>
-                                <input type="date" class="form-input" value="2018-06-01" disabled>
+                                <label class="form-label">Salary <span class="required">*</span></label>
+                                <input type="text" class="form-input"
+                                       th:value="${employment.salary}" disabled>
                             </div>
                             <div class="form-field">
                                 <label class="form-label">Total Experience</label>
-                                <input type="text" class="form-input" value="12 Years" disabled>
+                                <input type="text" class="form-input"
+                                       th:value="${employment.experience + ' Years'}" disabled>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-currency-rupee"></i>
-                            Income Details
-                        </h3>
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label class="form-label">Monthly Gross Salary <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="₹1,20,000" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Monthly Net Salary <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="₹95,000" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Additional Income</label>
-                                <input type="text" class="form-input" value="₹15,000" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Income Source</label>
-                                <input type="text" class="form-input" value="Freelance Consulting" disabled>
-                            </div>
-                        </div>
-
                         <div class="form-grid mt-4">
                             <div class="info-card">
                                 <div class="info-icon green">
@@ -473,7 +341,7 @@
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">Total Monthly Income</div>
-                                    <div class="info-value">₹1,10,000</div>
+                                    <div class="info-value" th:text="${employment.salary}" >₹1,10,000</div>
                                 </div>
                             </div>
                             <div class="info-card">
@@ -493,35 +361,6 @@
                                     <div class="info-label">Disposable Income</div>
                                     <div class="info-value">₹85,000</div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-geo-alt"></i>
-                            Office Address
-                        </h3>
-                        <div class="form-grid">
-                            <div class="form-field" style="grid-column: 1 / -1;">
-                                <label class="form-label">Office Address</label>
-                                <input type="text" class="form-input" value="Tower B, Cyber City, Sector 18, Gurugram" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">City</label>
-                                <input type="text" class="form-input" value="Gurugram" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">State</label>
-                                <input type="text" class="form-input" value="Haryana" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">PIN Code</label>
-                                <input type="text" class="form-input" value="122002" disabled>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Office Phone</label>
-                                <input type="tel" class="form-input" value="0124-4567890" disabled>
                             </div>
                         </div>
                     </div>
@@ -790,6 +629,490 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="cibil" class="tab-content">
+                    <div class="dashboard-content">
+                        <!-- Credit Score Card -->
+                        <div class="row mb-4">
+                            <div class="col-lg-4">
+                                <div class="score-card-large">
+                                    <div class="score-label">Your Credit Score</div>
+                                    <div class="score-value">816</div>
+                                    <div class="score-range">Excellent (300 - 900)</div>
+                                    <div class="mt-3">
+                                        <small style="opacity: 0.8;">Last updated: November 28, 2024</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="chart-card" style="height: 100%;">
+                                    <div class="chart-header" style="border: none; margin-bottom: 1rem;">
+                                        <h3 class="chart-title">Score Breakdown</h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="info-item">
+                                                <div class="info-label">Primary Factor 1</div>
+                                                <div class="info-value">Total Utilization</div>
+                                                <div class="custom-progress mt-2">
+                                                    <div class="custom-progress-bar excellent" style="width: 85%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="info-item">
+                                                <div class="info-label">Primary Factor 2</div>
+                                                <div class="info-value">Delinquency Presence</div>
+                                                <div class="custom-progress mt-2">
+                                                    <div class="custom-progress-bar excellent" style="width: 92%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="info-item">
+                                                <div class="info-label">Primary Factor 3</div>
+                                                <div class="info-value">Total Credit Exposure</div>
+                                                <div class="custom-progress mt-2">
+                                                    <div class="custom-progress-bar excellent" style="width: 78%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="info-item">
+                                                <div class="info-label">Score Version</div>
+                                                <div class="info-value">ERS 4.0</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Grid -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon blue">
+                                        <i class="bi bi-credit-card-2-front"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-title">Total Accounts</div>
+                                <div class="stat-value">13</div>
+                                <div class="stat-subtitle">6 Active • 7 Closed</div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon green">
+                                        <i class="bi bi-currency-rupee"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-title">Total Balance</div>
+                                <div class="stat-value">₹36.3L</div>
+                                <div class="stat-subtitle">Outstanding Amount</div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon amber">
+                                        <i class="bi bi-wallet2"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-title">Credit Limit</div>
+                                <div class="stat-value">₹6.02L</div>
+                                <div class="stat-subtitle">Available Credit</div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-header">
+                                    <div class="stat-icon red">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-title">Account Age</div>
+                                <div class="stat-value">103M</div>
+                                <div class="stat-subtitle">Oldest Account</div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="chart-card" id="personal-info">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Personal Information</h3>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="info-label">Full Name</div>
+                                    <div class="info-value">Text Kumar</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Date of Birth</div>
+                                    <div class="info-value">12-Sep-1987</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Gender</div>
+                                    <div class="info-value">Male</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Age</div>
+                                    <div class="info-value">37 Years</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">PAN</div>
+                                    <div class="info-value">PALSYH8294H</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Phone</div>
+                                    <div class="info-value">7838610665</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Email</div>
+                                    <div class="info-value">TextMCA29@gmail.com</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Total Income</div>
+                                    <div class="info-value">₹6,00,000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Address Information</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Primary Address</div>
+                                        <div class="info-value" style="font-size: 0.9rem; line-height: 1.5;">
+                                            A306 23 FLOOR WINDSOR PARADISE GHAZIABAD<br>
+                                            State: UP, PIN: 201017<br>
+                                            <small class="text-secondary">Reported: Oct 22, 2024</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Permanent Address</div>
+                                        <div class="info-value" style="font-size: 0.9rem; line-height: 1.5;">
+                                            558 KARAHEL ROAD AGRAVAL MAINPURI U P<br>
+                                            State: UP, PIN: 205001<br>
+                                            <small class="text-secondary">Reported: Jul 31, 2024</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Summary -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Account Summary</h3>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="info-label">Open Accounts</div>
+                                    <div class="info-value">6</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Total Past Due</div>
+                                    <div class="info-value">₹0</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">High Credit</div>
+                                    <div class="info-value">₹2.11L</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Total Sanction</div>
+                                    <div class="info-value">₹28.6L</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Monthly Payment</div>
+                                    <div class="info-value">₹33,057</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Recent Account</div>
+                                    <div class="info-value" style="font-size: 0.85rem;">Housing Loan<br><small>Oct 23, 2021</small></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Accounts Table -->
+                        <div class="chart-card" id="accounts">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Credit Accounts (Active)</h3>
+                                <span class="status-badge current">6 Active Accounts</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table account-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Account Type</th>
+                                        <th>Institution</th>
+                                        <th>Balance</th>
+                                        <th>Credit Limit</th>
+                                        <th>Status</th>
+                                        <th>Opened</th>
+                                        <th>Payment History</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹14,647</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹60,000</td>
+                                        <td><span class="status-badge current">Current</span></td>
+                                        <td>Oct 26, 2019</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time" title="On Time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹23,881</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹1,61,000</td>
+                                        <td><span class="status-badge current">Current</span></td>
+                                        <td>Apr 06, 2016</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month not-reported"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month not-reported"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹0</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹3,61,000</td>
+                                        <td><span class="status-badge current">Current</span></td>
+                                        <td>Dec 10, 2019</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Housing Loan</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹35,14,556</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹36,80,000</td>
+                                        <td><span class="status-badge current">Standard</span></td>
+                                        <td>Oct 21, 2021</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month late" title="1+ DPD"></div>
+                                                <div class="payment-month late"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Housing Loan</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹81,301</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹83,808</td>
+                                        <td><span class="status-badge current">Standard</span></td>
+                                        <td>Oct 23, 2021</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">₹0</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹20,000</td>
+                                        <td><span class="status-badge current">Current</span></td>
+                                        <td>Jul 17, 2019</td>
+                                        <td>
+                                            <div class="payment-history">
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                                <div class="payment-month on-time"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Closed Accounts -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Closed Accounts</h3>
+                                <span class="status-badge closed">7 Closed Accounts</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table account-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Account Type</th>
+                                        <th>Institution</th>
+                                        <th>Final Balance</th>
+                                        <th>Status</th>
+                                        <th>Opened</th>
+                                        <th>Closed</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">FINANCE</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Oct 09, 2018</td>
+                                        <td>Jul 13, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">FINANCE</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Oct 09, 2018</td>
+                                        <td>Nov 21, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Dec 19, 2020</td>
+                                        <td>Nov 20, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge loss">Loss</span></td>
+                                        <td>Oct 29, 2019</td>
+                                        <td>May 05, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Auto Loan</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Oct 23, 2017</td>
+                                        <td>Oct 13, 2022</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Credit Card</span></td>
+                                        <td style="font-weight: 600;">BANK</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Nov 29, 2017</td>
+                                        <td>Jan 14, 2021</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="account-type-badge">Consumer Loan</span></td>
+                                        <td style="font-weight: 600;">FINANCE</td>
+                                        <td style="font-family: 'DM Mono', monospace;">₹0</td>
+                                        <td><span class="status-badge closed">Closed</span></td>
+                                        <td>Apr 01, 2019</td>
+                                        <td>Sep 04, 2020</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Inquiry Summary -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Credit Inquiries</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Total Inquiries</div>
+                                        <div class="info-value">2</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Last 30 Days</div>
+                                        <div class="info-value">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Last 12 Months</div>
+                                        <div class="info-value">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="info-item">
+                                        <div class="info-label">Most Recent</div>
+                                        <div class="info-value" style="font-size: 0.85rem;">Dec 02, 2019</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="bre" class="tab-content">
+                    <h3>BRE DATA</h3>
+                </div>
             </div>
         </div>
 
@@ -867,6 +1190,26 @@
                     }
                 });
 
+            }
+
+            function switchTab(event, tabName) {
+                // Hide all tab contents
+                const tabContents = document.getElementsByClassName('tab-content');
+                for (let i = 0; i < tabContents.length; i++) {
+                    tabContents[i].classList.remove('active');
+                }
+
+                // Remove active class from all buttons
+                const tabButtons = document.getElementsByClassName('tab-btn');
+                for (let i = 0; i < tabButtons.length; i++) {
+                    tabButtons[i].classList.remove('active');
+                }
+
+                // Show the selected tab
+                document.getElementById(tabName).classList.add('active');
+
+                // Add active class to clicked button
+                event.currentTarget.classList.add('active');
             }
         </script>
     </th:block>

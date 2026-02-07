@@ -1,11 +1,19 @@
 package in.devtools.taskmgrapp.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "customer_address")
 public class CustomerAddress {
@@ -14,10 +22,9 @@ public class CustomerAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔹 FK → customers.id
     @OneToOne
     @JoinColumn(name = "customer_id", nullable = false, unique = true)
-    @OnDelete(action = OnDeleteAction.CASCADE) // DB-level cascade
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
     private String address;

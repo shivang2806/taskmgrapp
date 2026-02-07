@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "customer_kyc")
-public class CustomerKyc {
+@Table(name = "customer_bank")
+public class CustomerBank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,24 +25,19 @@ public class CustomerKyc {
     // 🔹 FK → customers.id
     @OneToOne
     @JoinColumn(name = "customer_id", nullable = false, unique = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE) // DB-level cascade
     private Customer customer;
 
-    @Column(columnDefinition = "json")
-    private String panDetails;
-
+    private String bankName;
+    private String accountHolderName;
+    private String accountNumber;
+    private String accountType;
+    private String ifscCode;
+    private String branchName;
     @Column(nullable = false)
-    private Boolean panVerified = false;
+    private Boolean isVerified = false;
 
-    private LocalDateTime panVerifiedAt;
-
-    @Column(columnDefinition = "json")
-    private String adharDetails;
-
-    @Column(nullable = false)
-    private Boolean adharVerified = false;
-
-    private LocalDateTime adharVerifiedAt;
+    private LocalDateTime verifiedAt;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
