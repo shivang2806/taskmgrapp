@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_DIR" value="logs"/>
+    <property name="DATE_PATTERN" value="%d{dd-MM-yyyy}"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- ======================== -->
+    <!--     CONSOLE APPENDER     -->
+    <!-- ======================== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--   APPLICATION (catch-all) -->
+    <!-- ======================== -->
+    <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/application/application-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--    CUSTOMER ASSIGNMENT   -->
+    <!-- ======================== -->
+    <appender name="CUSTOMER_ASSIGNMENT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/customer-assignment.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/customer-assignment/customer-assignment-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--    CUSTOMER CREATED      -->
+    <!-- ======================== -->
+    <appender name="CUSTOMER_CREATED_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/customer-created.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/customer-created/customer-created-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--      CUSTOMER EXPORT     -->
+    <!-- ======================== -->
+    <appender name="CUSTOMER_EXPORT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/customer-export.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/customer-export/customer-export-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--          JOBS            -->
+    <!-- ======================== -->
+    <appender name="JOBS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/jobs.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/jobs/jobs-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--       SCHEDULER          -->
+    <!-- ======================== -->
+    <appender name="SCHEDULER_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/scheduler.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/scheduler/scheduler-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--        WEBHOOK           -->
+    <!-- ======================== -->
+    <appender name="WEBHOOK_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/webhook.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/webhook/webhook-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--           API            -->
+    <!-- ======================== -->
+    <appender name="API_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/api/api-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================== -->
+    <!--       SECURITY           -->
+    <!-- ======================== -->
+    <appender name="SECURITY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/security.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/security/security-${DATE_PATTERN}-%d{HH, aux}.log</fileNamePattern>
+            <maxHistory>720</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================================= -->
+    <!--     CHANNEL LOGGERS (additivity=false    -->
+    <!--     so logs go ONLY to their channel)    -->
+    <!-- ======================================= -->
+
+    <logger name="channel.customer-assignment" level="DEBUG" additivity="false">
+        <appender-ref ref="CUSTOMER_ASSIGNMENT_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.customer-created" level="DEBUG" additivity="false">
+        <appender-ref ref="CUSTOMER_CREATED_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.customer-export" level="DEBUG" additivity="false">
+        <appender-ref ref="CUSTOMER_EXPORT_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.jobs" level="DEBUG" additivity="false">
+        <appender-ref ref="JOBS_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.scheduler" level="DEBUG" additivity="false">
+        <appender-ref ref="SCHEDULER_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.webhook" level="DEBUG" additivity="false">
+        <appender-ref ref="WEBHOOK_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.api" level="DEBUG" additivity="false">
+        <appender-ref ref="API_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="channel.security" level="DEBUG" additivity="false">
+        <appender-ref ref="SECURITY_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!-- ======================== -->
+    <!--       ROOT LOGGER        -->
+    <!-- ======================== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="APP_FILE"/>
+    </root>
+
+</configuration>
