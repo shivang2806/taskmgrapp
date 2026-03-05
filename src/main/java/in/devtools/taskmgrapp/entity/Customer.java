@@ -94,7 +94,7 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private CustomerBank customerBank;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = true)
     private User assignedUser;
 
