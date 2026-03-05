@@ -3,12 +3,13 @@ package in.devtools.taskmgrapp.service;
 import in.devtools.taskmgrapp.dto.CustomerDto;
 import in.devtools.taskmgrapp.dto.StoreCustomerDto;
 import in.devtools.taskmgrapp.entity.Customer;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface CustomerService {
 
-    List<CustomerDto> getAllCustomer();
+    Page<CustomerDto> getAllCustomer(int page, int size);
     void createCustomer(StoreCustomerDto storeCustomerDto);
     CustomerDto getCustomerById(Long id);
     void updateCustomer(CustomerDto CustomerDto);

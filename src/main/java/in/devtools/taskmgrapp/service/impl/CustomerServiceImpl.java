@@ -7,6 +7,9 @@ import in.devtools.taskmgrapp.repository.*;
 import in.devtools.taskmgrapp.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,11 +35,43 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerBankRepository customerBankRepository;
     private ModelMapper modelMapper;
 
+//    @Override
+//    public List<CustomerDto> getAllCustomer() {
+//        List<Customer> customers = customerRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+//        return customers.stream().map((customer)->modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+//    }
+
     @Override
-    public List<CustomerDto> getAllCustomer() {
-        List<Customer> customers = customerRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-        return customers.stream().map((customer)->modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+    public Page<CustomerDto> getAllCustomer(int page, int size) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        Page<Customer> customers = customerRepository.findAll(pageable);
+
+        // If page is empty and not the first page, redirect to last valid page
+        if (customers.isEmpty() && page > 0) {
+            // Get total count
+            long totalElements = customerRepository.count();
+            int totalPages = (int) Math.ceil((double) totalElements / size);
+            int lastPage = Math.max(0, totalPages - 1);
+
+            pageable = PageRequest.of(
+                    lastPage,
+                    size,
+                    Sort.by(Sort.Direction.DESC, "createdAt")
+            );
+            customers = customerRepository.findAll(pageable);
+        }
+
+        return customers.map(customer ->
+                modelMapper.map(customer, CustomerDto.class)
+        );
     }
+
 
     @Override
     public void createCustomer(StoreCustomerDto storeCustomerDto) {

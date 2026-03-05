@@ -42,6 +42,44 @@
                     </tr>
                     </tbody>
                 </table>
+                <nav aria-label="Customer pagination">
+                    <ul class="pagination justify-content-end">
+                        <!-- Previous -->
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/customer-list(page=${currentPage - 1})}">
+                                Previous
+                            </a>
+                        </li>
+                        <!-- Page Numbers -->
+                        <li class="page-item">
+                            <a class="page-link"
+                               th:text="${1}"
+                               th:href="@{/customer-list(page=${1})}">
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               th:text="${currentPage}"
+                               th:href="@{/customer-list(page=${currentPage})}">
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               th:text="${totalPages}"
+                               th:href="@{/customer-list(page=${totalPages})}">
+                            </a>
+                        </li>
+                        <!-- Next -->
+                        <li class="page-item"
+                            th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/customer-list(page=${currentPage + 1})}">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

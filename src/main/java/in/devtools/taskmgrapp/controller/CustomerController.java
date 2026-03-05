@@ -5,6 +5,7 @@ import in.devtools.taskmgrapp.service.CustomerProfileService;
 import in.devtools.taskmgrapp.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,23 @@ public class CustomerController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/customer-list")
-    public String getAllCustomer(Model model)
-    {
-        List<CustomerDto> customers =  customerService.getAllCustomer();
-        model.addAttribute("customers", customers);
+    public String getAllCustomer(
+            @RequestParam(defaultValue = "0") int page,
+            Model model
+    ) {
+        int pageSize = 20;
+        Page<CustomerDto> customerPage =
+                customerService.getAllCustomer(page, pageSize);
+
+        // If requested page is beyond total pages, redirect to last page
+        if (page >= customerPage.getTotalPages() && customerPage.getTotalPages() > 0) {
+            return "redirect:/customers?page=" + (customerPage.getTotalPages() - 1);
+        }
+
+        model.addAttribute("customers", customerPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", customerPage.getTotalPages());
+        model.addAttribute("totalItems", customerPage.getTotalElements());
 
         return "customers/customerList";
     }
