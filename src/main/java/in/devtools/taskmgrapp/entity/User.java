@@ -1,5 +1,6 @@
 package in.devtools.taskmgrapp.entity;
 
+import in.devtools.taskmgrapp.entity.enums.AssignType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private List<Role> roles;
+
+    // Inside User.java
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AssignType assignType = AssignType.PENDING;
 
 }
